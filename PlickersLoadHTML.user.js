@@ -12,11 +12,38 @@
 // ==/UserScript==
 
 function PlickersLoadHTML () {
+    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+    var textArea = allQuestions.querySelectorAll('textarea');
+    var regexURL = /\s*\{.*\}\s*/;
+    for(i=0;i<textArea.length;i++) {
+        var tab=textArea[i].value.split(":::");
+        if (tab.length > 1) {
+            var tabsOK = 0;
+            var nbtabs = tab.length;
+            for(j=0;j<tab.length;j++) {
+                if (regexURL.test(tab[j])) {
+                    tmpURL = tab[j].replace("^\s*\{\s*",'').replace("\s*\}\s*$",'');
+                    var oReq = new XMLHttpRequest();
+                    oReq.open("GET", tmpURL+"Question.html", true);
+                    oReq.responseType = "text\/plain";
+                    oReq.onload = function(oEvent) {
+                        tab[j]=oReq.response;
+                        tabsOK++;
+                        if (tabsOK==nbtabs) {
+                            textArea[i].value=tab.join('');
+                        }
+                    };
+                    oReq.send();
+                } else { tabsOK ++; }
+            }
+        }
+    }
 
 }
 
 function PlickersNewQuestion () {
-    var questionDiv  = document.getElementsByClassName('question-field');
+    //var questionDiv  = document.getElementsByClassName('question-field')[0].;
+    //document.querySelectorAll('[ng-model="vm.question.body"]')
 
 }
 
