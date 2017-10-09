@@ -13,7 +13,7 @@
 
 function PlickersLoadHTML () {
     //var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
-    var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]').;
+    var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
     //var textArea = allQuestions.querySelectorAll('textarea');
     var regexURL = /\s*\{.*\}\s*/;
     for(i=0;i<allQuestions.length;i++) {
