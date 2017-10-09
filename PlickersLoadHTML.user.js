@@ -17,7 +17,7 @@ function PlickersLoadHTML () {
     //var textArea = allQuestions.querySelectorAll('textarea');
     var regexURL = /\s*\{.*\}\s*/;
     for(i=0;i<allQuestions.length;i++) {
-        var textArea = allQuestions[i].querySelector('textarea');
+        var textArea = allQuestions[i];
         var tab=textArea.value.split(":::");
         if (tab.length > 1) {
             var tabsOK = 0;
