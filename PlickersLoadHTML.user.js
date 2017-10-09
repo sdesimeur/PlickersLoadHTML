@@ -12,11 +12,13 @@
 // ==/UserScript==
 
 function PlickersLoadHTML () {
-    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
-    var textArea = allQuestions.querySelectorAll('textarea');
+    //var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+    var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]').;
+    //var textArea = allQuestions.querySelectorAll('textarea');
     var regexURL = /\s*\{.*\}\s*/;
-    for(i=0;i<textArea.length;i++) {
-        var tab=textArea[i].value.split(":::");
+    for(i=0;i<allQuestions.length;i++) {
+        var textArea = allQuestions[i].querySelector('textarea');
+        var tab=textArea.value.split(":::");
         if (tab.length > 1) {
             var tabsOK = 0;
             var nbtabs = tab.length;
@@ -30,7 +32,7 @@ function PlickersLoadHTML () {
                         tab[j]=oReq.response;
                         tabsOK++;
                         if (tabsOK==nbtabs) {
-                            textArea[i].value=tab.join('');
+                            textArea.value=tab.join('');
                         }
                     };
                     oReq.send();
