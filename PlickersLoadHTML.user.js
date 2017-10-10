@@ -26,13 +26,15 @@ function PlickersLoadHTML () {
                 if (regexURL.test(tab[j])) {
                     tmpURL = tab[j].replace("^\s*\{\s*",'').replace("\s*\}\s*$",'');
                     var oReq = new XMLHttpRequest();
-                    oReq.open("GET", tmpURL+"Question.html", true);
-                    oReq.responseType = "text\/plain";
-                    oReq.onload = function(oEvent) {
-                        tab[j]=oReq.response;
-                        tabsOK++;
-                        if (tabsOK==nbtabs) {
-                            textArea.value=tab.join('');
+                    oReq.open("GET", tmpURL+"/Question.html", true);
+                    //oReq.responseType = "text\/plain";
+                    oReq.onreadystatechange = function() {
+                        if (oReq.readyState === XMLHttpRequest.DONE) {
+                            tab[j]=oReq.response;
+                            tabsOK++;
+                            if (tabsOK==nbtabs) {
+                                textArea.value=tab.join('');
+                            }
                         }
                     };
                     oReq.send();
