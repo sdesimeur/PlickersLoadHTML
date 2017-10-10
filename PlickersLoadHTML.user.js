@@ -24,7 +24,7 @@ function PlickersLoadHTML () {
             var nbtabs = tab.length;
             for(j=0;j<tab.length;j++) {
                 if (regexURL.test(tab[j])) {
-                    tmpURL = tab[j].replace("^\s*\{\s*",'').replace("\s*\}\s*$",'');
+                    tmpURL = tab[j].replace(/^\s*\{\s*/,'').replace(/\s*\}\s*$/,'');
                     var oReq = new XMLHttpRequest();
                     oReq.open("GET", tmpURL+"/Question.html", true);
                     //oReq.responseType = "text\/plain";
