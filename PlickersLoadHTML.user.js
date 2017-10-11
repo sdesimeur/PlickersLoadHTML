@@ -12,7 +12,7 @@
 // ==/UserScript==
 
 function PlickersLoadHTML () {
-    var url4Download = "https://www.sdesimeur.com/download.php?url=";
+    var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
     //var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
     var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
     //var textArea = allQuestions.querySelectorAll('textarea');
