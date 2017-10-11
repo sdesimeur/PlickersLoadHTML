@@ -12,6 +12,7 @@
 // ==/UserScript==
 
 function PlickersLoadHTML () {
+    var url4Download = "https://www.sdesimeur.com/download.php?url=";
     //var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
     var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
     //var textArea = allQuestions.querySelectorAll('textarea');
@@ -26,7 +27,7 @@ function PlickersLoadHTML () {
                 if (regexURL.test(tab[j])) {
                     tmpURL = tab[j].replace("^\s*\{\s*",'').replace("\s*\}\s*$",'');
                     var oReq = new XMLHttpRequest();
-                    oReq.open("GET", tmpURL+"/Question.html", true);
+                    oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
                     //oReq.responseType = "text\/plain";
                     oReq.onreadystatechange = function() {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
