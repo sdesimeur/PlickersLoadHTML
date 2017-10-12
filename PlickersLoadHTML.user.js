@@ -16,17 +16,17 @@ function PlickersLoadHTML () {
     var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
     //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
     //var item = allQuestions.querySelectorAll('textarea');
-    var regexURL = /\s*\{.*\}\s*/;
+    var regexURL = /:::\{\s*(.*)\s*\}:::/;
     for(i=0;i<allQuestions.length;i++) {
         var item = allQuestions[i];
-        var tab=item.innerHTML.split(":::");
-        //var tab=item.value.split(":::");
-        if (tab.length > 1) {
-            var tabsOK = 0;
-            var nbtabs = tab.length;
-            for(j=0;j<tab.length;j++) {
-                if (regexURL.test(tab[j])) {
-                    tmpURL = tab[j].replace(/^\s*\{\s*/,'').replace(/\s*\}\s*$/,'');
+        questionItem = item.getElementsByClassName('question-container');
+        if (! questionItem.classList.contains('turnInHTML')) {
+            questionItem.classList.add('turnInHTML')
+            result = regexURL.exec(tab[j]);
+            if (result !== null) {
+                tmpURL = result[1];
+                questionDiv = questionItem.getElementsByClassName('table-question')
+                questionDiv.style.display = "none";
                     /*
                     var oReq = new XMLHttpRequest();
                     oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -41,10 +41,11 @@ function PlickersLoadHTML () {
                     };
                     oReq.send();
                     */
-                    tab[j]='<iframe src="' + tmpURL +'/Question.html" width="100%" height="100%" frameborder="0"></iframe>';
-                } else { tabsOK ++; }
+                var ifrm = document.createElement("iframe");
+                ifrm.src = tmpURL+'/Question.html';
+                ifrm.style.border = "0 none #000000";
+                questionDiv.parentNode.insertBefore(ifrm,questionDiv);
             }
-            item.innerHTML=tab.join('');
         }
     }
 
