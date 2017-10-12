@@ -19,7 +19,7 @@ function PlickersLoadHTML () {
     var regexURL = /\s*\{.*\}\s*/;
     for(i=0;i<allQuestions.length;i++) {
         var item = allQuestions[i];
-        var tab=item.outerText.split(":::");
+        var tab=item.innerHTML.split(":::");
         //var tab=item.value.split(":::");
         if (tab.length > 1) {
             var tabsOK = 0;
@@ -44,7 +44,7 @@ function PlickersLoadHTML () {
                     tab[j]='<iframe src="' + tmpURL +'/Question.html" width="100%" height="100%" frameborder="0"></iframe>';
                 } else { tabsOK ++; }
             }
-            item.outerText=tab.join('');
+            item.innerHTML=tab.join('');
         }
     }
 
