@@ -13,13 +13,14 @@
 
 function PlickersLoadHTML () {
     var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
-    //var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
-    var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
-    //var textArea = allQuestions.querySelectorAll('textarea');
+    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+    //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
+    //var item = allQuestions.querySelectorAll('textarea');
     var regexURL = /\s*\{.*\}\s*/;
     for(i=0;i<allQuestions.length;i++) {
-        var textArea = allQuestions[i];
-        var tab=textArea.value.split(":::");
+        var item = allQuestions[i];
+        //var tab=item.outerText.split(":::");
+        var tab=item.value.split(":::");
         if (tab.length > 1) {
             var tabsOK = 0;
             var nbtabs = tab.length;
@@ -34,7 +35,7 @@ function PlickersLoadHTML () {
                             tab[j]=oReq.response;
                             tabsOK++;
                             if (tabsOK==nbtabs) {
-                                textArea.value=tab.join('');
+                                item.value=tab.join('');
                             }
                         }
                     };
@@ -43,7 +44,7 @@ function PlickersLoadHTML () {
                     tab[j]='<iframe src="' + tmpURL +'/Question.html" width="100%" height="100%" frameborder="0"></iframe>';
                 } else { tabsOK ++; }
             }
-            textArea.value=tab.join('');
+            item.value=tab.join('');
         }
     }
 
