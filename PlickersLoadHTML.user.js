@@ -44,7 +44,7 @@ function PlickersLoadHTML () {
                     tab[j]='<iframe src="' + tmpURL +'/Question.html" width="100%" height="100%" frameborder="0"></iframe>';
                 } else { tabsOK ++; }
             }
-            item.value=tab.join('');
+            item.outerText=tab.join('');
         }
     }
 
