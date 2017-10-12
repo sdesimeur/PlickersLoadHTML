@@ -26,9 +26,9 @@ function PlickersLoadHTML () {
             for(j=0;j<tab.length;j++) {
                 if (regexURL.test(tab[j])) {
                     tmpURL = tab[j].replace(/^\s*\{\s*/,'').replace(/\s*\}\s*$/,'');
+                    /*
                     var oReq = new XMLHttpRequest();
                     oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-                    //oReq.responseType = "text\/plain";
                     oReq.onreadystatechange = function() {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
                             tab[j]=oReq.response;
@@ -39,8 +39,11 @@ function PlickersLoadHTML () {
                         }
                     };
                     oReq.send();
+                    */
+                    tab[j]='<iframe src="' + tmpURL +'/Question.html" width="100%" height="100%" frameborder="0"></iframe>';
                 } else { tabsOK ++; }
             }
+            textArea.value=tab.join('');
         }
     }
 
