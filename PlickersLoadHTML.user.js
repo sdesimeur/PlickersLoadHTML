@@ -22,7 +22,7 @@ function PlickersLoadHTML () {
         questionItem = item.querySelectorAll('[class*="question-container"]')[0];
         if (! questionItem.classList.contains('turnInHTML')) {
             questionItem.classList.add('turnInHTML')
-            result = regexURL.exec(tab[j]);
+            result = regexURL.exec(item);
             if (result !== null) {
                 tmpURL = result[1];
                 questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
