@@ -19,13 +19,13 @@ function PlickersLoadHTML () {
     var regexURL = /:::\{\s*(.*)\s*\}:::/;
     for(i=0;i<allQuestions.length;i++) {
         var item = allQuestions[i];
-        questionItem = item.getElementsByClassName('question-container');
+        questionItem = item.querySelectorAll('[class*="question-container"]')[0];
         if (! questionItem.classList.contains('turnInHTML')) {
             questionItem.classList.add('turnInHTML')
             result = regexURL.exec(tab[j]);
             if (result !== null) {
                 tmpURL = result[1];
-                questionDiv = questionItem.getElementsByClassName('table-question')
+                questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
                 questionDiv.style.display = "none";
                     /*
                     var oReq = new XMLHttpRequest();
