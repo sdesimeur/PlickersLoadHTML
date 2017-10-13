@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.14
+// @version      1.15
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -11,20 +11,15 @@
 // @run-at document-end
 // ==/UserScript==
 
-function PlickersLoadHTML () {
-    var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
-    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
-    //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
-    //var item = allQuestions.querySelectorAll('textarea');
+
+function changeItemByHTML (questionItem) {
     var regexURL = /:::\{\s*(.*)\s*\}:::/;
-    for(var i=0;i<allQuestions.length;i++) {
-        var item = allQuestions[i];
-        var questionItem = item.querySelectorAll('[class*="question-container"]')[0];
         if (! questionItem.classList.contains('turnInHTML')) {
-            var result = regexURL.exec(item.outerText);
+            var result = regexURL.exec(questionItem.outerText);
             if (result !== null) {
                 var tmpURL = result[1];
-                var questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
+                var questionDivS = questionItem.querySelectorAll('[class*="table-question"');
+                var questionDiv = questionDivS[0];
                 questionDiv.style.display = "none";
                 var oReq = new XMLHttpRequest();
                 //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -42,14 +37,32 @@ function PlickersLoadHTML () {
                                     srcs[k].src = tmpURL + "/" + srctxt;
                                 }
                             }
-                            console.log(sp.innerHTML);
                             questionDiv.parentNode.insertBefore(sp,questionDiv);
                         }
                 };
                 oReq.send();
             }
         }
+}
+
+
+function PlickersLoadHTML () {
+    //var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
+    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+    //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
+    //var item = allQuestions.querySelectorAll('textarea');
+    for(var i=0;i<allQuestions.length;i++) {
+        var item = allQuestions[i];
+        var questionItemS = item.querySelectorAll('[class*="question-container"]');
+        var questionItem = questionItemS[0];
+        changeItemByHTML(questionItem);
     }
+//                '[ng-repeat*="choice in vm.question.choices track by $index"]'
+//                '[ng-click*="vm.updateQuestion()"]'
+//                '[ng-click*="vm.addQuestion(true)"]'
+//                '[ng-click*="vm.addQuestion()"]'
+
+//                '[class*="question-body"]'
 
 }
 
