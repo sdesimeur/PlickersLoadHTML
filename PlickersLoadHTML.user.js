@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.12
+// @version      1.13
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -17,14 +17,14 @@ function PlickersLoadHTML () {
     //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
     //var item = allQuestions.querySelectorAll('textarea');
     var regexURL = /:::\{\s*(.*)\s*\}:::/;
-    for(i=0;i<allQuestions.length;i++) {
+    for(var i=0;i<allQuestions.length;i++) {
         var item = allQuestions[i];
-        questionItem = item.querySelectorAll('[class*="question-container"]')[0];
+        var questionItem = item.querySelectorAll('[class*="question-container"]')[0];
         if (! questionItem.classList.contains('turnInHTML')) {
-            result = regexURL.exec(item.outerText);
+            var result = regexURL.exec(item.outerText);
             if (result !== null) {
-                tmpURL = result[1];
-                questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
+                var tmpURL = result[1];
+                var questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
                 questionDiv.style.display = "none";
                 var oReq = new XMLHttpRequest();
                 //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -35,9 +35,9 @@ function PlickersLoadHTML () {
                             var sp = document.createElement("span");
                             sp.id="mySpan";
                             sp.innerHTML=oReq.responseText;
-                            srcs = sp.querySelectorAll('[src]');
-                            for (k=0;k<srcs.length;k++) {
-                                srctxt = srcs[k].src;
+                            var srcs = sp.querySelectorAll('[src]');
+                            for (var k=0;k<srcs.length;k++) {
+                                var srctxt = srcs[k].src;
                                 if (! (/^\s*(http|data)/g.test(srctxt))) {
                                     srcs[k].src = tmpURL + "/" + srctxt;
                                 }
