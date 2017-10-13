@@ -33,7 +33,7 @@ function PlickersLoadHTML () {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
                             var sp = document.createElement("span");
                             sp.id="mySpan";
-                            sp.innerTHML=oReq.responseText;
+                            sp.innerHTML=oReq.responseText;
                             console.log(oReq.responseText);
                             questionDiv.parentNode.insertBefore(sp,questionDiv);
                         }
