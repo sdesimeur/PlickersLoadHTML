@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.6
+// @version      1.7
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -34,7 +34,14 @@ function PlickersLoadHTML () {
                             var sp = document.createElement("span");
                             sp.id="mySpan";
                             sp.innerHTML=oReq.responseText;
-                            console.log(oReq.responseText);
+                            srcs = sp.querySelectorAll('[src]');
+                            for (k=0; k<srcs.length;k++) {
+                                srctxt = srcs[k].src;
+                                if (! (/^\s*http/g.test(srctxt))) {
+                                    srcs[k].src = tmpURL + "/" + srctxt;
+                                }
+                            }
+                            console.log(sp.innerHTML);
                             questionDiv.parentNode.insertBefore(sp,questionDiv);
                         }
                 };
