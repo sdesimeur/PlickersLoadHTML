@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.11
+// @version      1.12
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -38,9 +38,7 @@ function PlickersLoadHTML () {
                             srcs = sp.querySelectorAll('[src]');
                             for (k=0;k<srcs.length;k++) {
                                 srctxt = srcs[k].src;
-                                if ( /https?;\/\/www\.plickers\.com/g.test() ) {
-                                    srcs[k].src = srctxt.replace(/https?;\/\/www\.plickers\.com/g,tmpURL);
-                                } else if (! (/^\s*(http|data)/g.test(srctxt))) {
+                                if (! (/^\s*(http|data)/g.test(srctxt))) {
                                     srcs[k].src = tmpURL + "/" + srctxt;
                                 }
                             }
