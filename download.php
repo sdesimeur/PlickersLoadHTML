@@ -1,6 +1,7 @@
 <?php
     header('Content-type: text/plain');
-    $url=base64_decode($_POST['url']);
+    $url=base64_decode($_GET['url']);
+    echo $url;
 	$ch = curl_init();
 	$timeout = 5;
 	curl_setopt($ch, CURLOPT_URL, $url);
