@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.9
+// @version      1.10
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -21,7 +21,6 @@ function PlickersLoadHTML () {
         var item = allQuestions[i];
         questionItem = item.querySelectorAll('[class*="question-container"]')[0];
         if (! questionItem.classList.contains('turnInHTML')) {
-            questionItem.classList.add('turnInHTML');
             result = regexURL.exec(item.outerText);
             if (result !== null) {
                 tmpURL = result[1];
@@ -32,6 +31,7 @@ function PlickersLoadHTML () {
                 oReq.open("GET", tmpURL+"/Question.html", true);
                 oReq.onreadystatechange = function() {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
+                            questionItem.classList.add('turnInHTML');
                             var sp = document.createElement("span");
                             sp.id="mySpan";
                             sp.innerHTML=oReq.responseText;
