@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.13
+// @version      1.14
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -37,7 +37,7 @@ function PlickersLoadHTML () {
                             sp.innerHTML=oReq.responseText;
                             var srcs = sp.querySelectorAll('[src]');
                             for (var k=0;k<srcs.length;k++) {
-                                var srctxt = srcs[k].src;
+                                var srctxt = srcs[k].attributes[0].nodeValue;
                                 if (! (/^\s*(http|data)/g.test(srctxt))) {
                                     srcs[k].src = tmpURL + "/" + srctxt;
                                 }
