@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.8
+// @version      1.9
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -28,7 +28,8 @@ function PlickersLoadHTML () {
                 questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
                 questionDiv.style.display = "none";
                 var oReq = new XMLHttpRequest();
-                oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+                //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+                oReq.open("GET", tmpURL+"/Question.html", true);
                 oReq.onreadystatechange = function() {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
                             var sp = document.createElement("span");
