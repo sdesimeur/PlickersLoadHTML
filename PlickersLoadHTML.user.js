@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.4
+// @version      1.5
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
