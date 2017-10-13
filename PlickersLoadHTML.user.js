@@ -33,8 +33,8 @@ function PlickersLoadHTML () {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
                             var sp = document.createElement("span");
                             sp.id="mySpan";
-                            sp.innerTHML=oReq.response;
-                            window.alert(oReq.response);
+                            sp.innerTHML=oReq.responseText;
+                            console.log(oReq.responseText);
                             questionDiv.parentNode.insertBefore(sp,questionDiv);
                         }
                 };
