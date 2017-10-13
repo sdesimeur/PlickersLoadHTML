@@ -27,24 +27,16 @@ function PlickersLoadHTML () {
                 tmpURL = result[1];
                 questionDiv = questionItem.querySelectorAll('[class*="table-question"')[0];
                 questionDiv.style.display = "none";
-                    /*
-                    var oReq = new XMLHttpRequest();
-                    oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-                    oReq.onreadystatechange = function() {
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+                oReq.onreadystatechange = function() {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
-                            tab[j]=oReq.response;
-                            tabsOK++;
-                            if (tabsOK==nbtabs) {
-                                item.value=tab.join('');
-                            }
+                            var sp = document.createElement("span");
+                            sp.innerTHML=oReq.response;
+                            questionDiv.parentNode.insertBefore(sp,questionDiv);
                         }
-                    };
-                    oReq.send();
-                    */
-                var ifrm = document.createElement("iframe");
-                ifrm.src = tmpURL+'/Question.html';
-                ifrm.style.border = "0 none #000000";
-                questionDiv.parentNode.insertBefore(ifrm,questionDiv);
+                };
+                oReq.send();
             }
         }
     }
