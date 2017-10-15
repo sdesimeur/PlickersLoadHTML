@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.17
+// @version      1.18
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -13,6 +13,7 @@
 
 
 function changeItemByHTML (questionDiv) {
+    //var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
     var regexURL = /:::\{\s*(.*)\s*\}:::/;
         if (! questionDiv.classList.contains('turnInHTML')) {
             var result = regexURL.exec(questionDiv.outerText);
@@ -45,22 +46,25 @@ function changeItemByHTML (questionDiv) {
 
 
 function PlickersLoadHTML () {
-    //var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
-    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
-    //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
-    //var item = allQuestions.querySelectorAll('textarea');
-    for(var i=0;i<allQuestions.length;i++) {
-        var item = allQuestions[i];
-        var questionItemS = item.querySelectorAll('[class*="question-container"]');
-        var questionDiv = null;
-        if ( questionItemS.length === 0 ) {
-            var questionItem = questionItemS[0];
-            var questionDivS = questionItem.querySelectorAll('[class*="table-question"');
-            questionDiv = questionDivS[0];
-        } else {
-            questionDiv = questionItem.querySelectorAll('[class*="question-body"]')[0];
-        }
+    var questionDiv = null;
+    questionDivS = questionItem.querySelectorAll('[class*="question-body"]');
+    if ( questionDivS.length !== 0 ) {
+        questionDiv = questionDivS[0];
         changeItemByHTML(questionDiv);
+    } else {
+	    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+	    //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
+	    //var item = allQuestions.querySelectorAll('textarea');
+	    for(var i=0;i<allQuestions.length;i++) {
+	        var item = allQuestions[i];
+	        var questionItemS = item.querySelectorAll('[class*="question-container"]');
+	        if ( questionItemS.length === 0 ) {
+	            var questionItem = questionItemS[0];
+	            var questionDivS = questionItem.querySelectorAll('[class*="table-question"');
+	            questionDiv = questionDivS[0];
+	        }
+	        changeItemByHTML(questionDiv);
+	    }
     }
 //                '[ng-repeat*="choice in vm.question.choices track by $index"]'
 //                '[ng-click*="vm.updateQuestion()"]'
