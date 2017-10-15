@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.22
+// @version      1.23
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -20,15 +20,15 @@ function changeItemByHTML (questionDiv) {
             if (result !== null) {
                 var tmpURL = result[1];
                 questionDiv.style.display = "none";
-                var oReq = new XMLHttpRequest();
+                var oReq1 = new XMLHttpRequest();
                 //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-                oReq.open("GET", tmpURL+"/Question.html", true);
-                oReq.onreadystatechange = function() {
-                        if (oReq.readyState === XMLHttpRequest.DONE) {
+                oReq1.open("GET", tmpURL+"/Question.html", true);
+                oReq1.onreadystatechange = function() {
+                        if (oReq1.readyState === XMLHttpRequest.DONE) {
                             questionDiv.classList.add('turnInHTML');
                             var sp = document.createElement("span");
                             sp.id="mySpan";
-                            sp.innerHTML=oReq.responseText;
+                            sp.innerHTML=oReq1.responseText;
                             var srcs = sp.querySelectorAll('[src]');
                             for (var k=0;k<srcs.length;k++) {
                                 var srctxt = srcs[k].attributes[0].nodeValue;
@@ -39,7 +39,22 @@ function changeItemByHTML (questionDiv) {
                             questionDiv.parentNode.insertBefore(sp,questionDiv);
                         }
                 };
-                oReq.send();
+                oReq1.send();
+                var oReq2 = new XMLHttpRequest();
+                //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+                oReq2.open("GET", tmpURL+"/GoodResponse.txt", true);
+                oReq2.onreadystatechange = function() {
+                        if (oReq2.readyState === XMLHttpRequest.DONE) {
+                            var resp=oReq2.responseText;
+                            var id = /[ABCD]/.exec(resp)[0].charCodeAt(0)-"A".charCodeAt(0);
+                            var choices = $scope.vm.question.choices;
+                            var cl = choices.length;
+                            for (var k=0;k<cl;k++) {
+                                choices[k].correct=(k===id);
+                            }
+                        }
+                };
+                oReq2.send();
             }
         }
 }
