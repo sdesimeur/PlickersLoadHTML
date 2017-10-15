@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.21
+// @version      1.22
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -46,7 +46,7 @@ function changeItemByHTML (questionDiv) {
 
 
 function PlickersLoadHTML () {
-    var questionDivS = questionItem.querySelectorAll('[class*="question-body"]');
+    var questionDivS = document.querySelectorAll('[class*="question-body"]');
     if ( questionDivS.length !== 0 ) {
         var questionDiv = questionDivS[0];
         changeItemByHTML(questionDiv);
