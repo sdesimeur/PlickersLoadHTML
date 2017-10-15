@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.15
+// @version      1.16
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -12,21 +12,19 @@
 // ==/UserScript==
 
 
-function changeItemByHTML (questionItem) {
+function changeItemByHTML (questionDiv) {
     var regexURL = /:::\{\s*(.*)\s*\}:::/;
-        if (! questionItem.classList.contains('turnInHTML')) {
-            var result = regexURL.exec(questionItem.outerText);
+        if (! questionDiv.classList.contains('turnInHTML')) {
+            var result = regexURL.exec(questionDiv.outerText);
             if (result !== null) {
                 var tmpURL = result[1];
-                var questionDivS = questionItem.querySelectorAll('[class*="table-question"');
-                var questionDiv = questionDivS[0];
                 questionDiv.style.display = "none";
                 var oReq = new XMLHttpRequest();
                 //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
                 oReq.open("GET", tmpURL+"/Question.html", true);
                 oReq.onreadystatechange = function() {
                         if (oReq.readyState === XMLHttpRequest.DONE) {
-                            questionItem.classList.add('turnInHTML');
+                            questionDiv.classList.add('turnInHTML');
                             var sp = document.createElement("span");
                             sp.id="mySpan";
                             sp.innerHTML=oReq.responseText;
@@ -55,7 +53,9 @@ function PlickersLoadHTML () {
         var item = allQuestions[i];
         var questionItemS = item.querySelectorAll('[class*="question-container"]');
         var questionItem = questionItemS[0];
-        changeItemByHTML(questionItem);
+        var questionDivS = questionItem.querySelectorAll('[class*="table-question"');
+        var questionDiv = questionDivS[0];
+        changeItemByHTML(questionDiv);
     }
 //                '[ng-repeat*="choice in vm.question.choices track by $index"]'
 //                '[ng-click*="vm.updateQuestion()"]'
