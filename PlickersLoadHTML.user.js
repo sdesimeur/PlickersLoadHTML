@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.18
+// @version      1.19
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -46,24 +46,24 @@ function changeItemByHTML (questionDiv) {
 
 
 function PlickersLoadHTML () {
-    var questionDiv = null;
-    questionDivS = questionItem.querySelectorAll('[class*="question-body"]');
+    var questionDivS = questionItem.querySelectorAll('[class*="question-body"]');
     if ( questionDivS.length !== 0 ) {
-        questionDiv = questionDivS[0];
+        var questionDiv = questionDivS[0];
         changeItemByHTML(questionDiv);
     } else {
 	    var allQuestions = document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
 	    //var allQuestions = document.querySelectorAll('[ng-model="vm.question.body"]');
 	    //var item = allQuestions.querySelectorAll('textarea');
-	    for(var i=0;i<allQuestions.length;i++) {
-	        var item = allQuestions[i];
+        var aql = allQuestions.length;
+        if (aql !== 0) for (var i=0;i<aql;i++) {
+            var item = allQuestions[i];
 	        var questionItemS = item.querySelectorAll('[class*="question-container"]');
-	        if ( questionItemS.length === 0 ) {
-	            var questionItem = questionItemS[0];
-	            var questionDivS = questionItem.querySelectorAll('[class*="table-question"');
-	            questionDiv = questionDivS[0];
+	        if ( questionItemS.length !== 0 ) {
+	            var questionDivS = questionItemS[0].querySelectorAll('[class*="table-question"');
+                if (questionDivS.length 1== 0) {
+	                changeItemByHTML(questionDivS[0]);
+                }
 	        }
-	        changeItemByHTML(questionDiv);
 	    }
     }
 //                '[ng-repeat*="choice in vm.question.choices track by $index"]'
