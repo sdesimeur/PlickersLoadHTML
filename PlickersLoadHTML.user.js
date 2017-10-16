@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.25
+// @version      1.26
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -14,8 +14,8 @@
 
 function changeItemByHTML (questionDiv) {
     //var url4Download = "https://www.sdesimeur.com/utils/download.php?url=";
-    var regexURL = /:::\{\s*(.*)\s*\}:::/;
         if (! questionDiv.classList.contains('turnInHTML')) {
+            var regexURL = /:::\{\s*(.*)\s*\}:::/;
             var result = regexURL.exec(questionDiv.outerText);
             if (result !== null) {
                 var tmpURL = result[1];
@@ -40,11 +40,15 @@ function changeItemByHTML (questionDiv) {
                         }
                 };
                 oReq1.send();
+            }
+        }
+        if (! questionDiv.classList.contains('trueResponsesChanged')) {
                 var oReq2 = new XMLHttpRequest();
                 //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-                oReq2.open("GET", tmpURL+"/GoodResponse.txt", true);
+                oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
                 oReq2.onreadystatechange = function() {
                         if (oReq2.readyState === XMLHttpRequest.DONE) {
+                            questionDiv.classList.add('trueResponsesChanged');
                             var resp=oReq2.responseText;
                             var choices = angular.element(questionDiv).scope().vm.question.choices;
                             var cl = choices.length;
@@ -54,7 +58,6 @@ function changeItemByHTML (questionDiv) {
                         }
                 };
                 oReq2.send();
-            }
         }
 }
 
