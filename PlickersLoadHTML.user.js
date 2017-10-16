@@ -1,7 +1,7 @@
 //==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.29
+// @version      1.30
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -42,7 +42,10 @@ function changeItemByHTML (questionDiv) {
                 oReq1.send();
             }
         }
+
+        // angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope()
         if (! questionDiv.classList.contains('trueResponsesChanged')) {
+                var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
                 var oReq2=new XMLHttpRequest();
                 //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
                 oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
@@ -51,12 +54,12 @@ function changeItemByHTML (questionDiv) {
                             questionDiv.classList.add('trueResponsesChanged');
                             var resp=oReq2.responseText;
                             if (resp.length<20) {
-                                var choices=angular.element(questionDiv).scope().vm.question.choices;
+                                var choices=currentVM.question.choices;
                                 var cl=choices.length;
                                 for (var k=0;k<cl;k++) {
                                     choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
                                 }
-                                angular.element(questionDiv).scope().vm.updateQuestion();
+                                currentVM.updateQuestion();
                             }
                         }
                 };
