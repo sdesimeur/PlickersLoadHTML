@@ -1,7 +1,7 @@
 //==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.28
+// @version      1.29
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -56,6 +56,7 @@ function changeItemByHTML (questionDiv) {
                                 for (var k=0;k<cl;k++) {
                                     choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
                                 }
+                                angular.element(questionDiv).scope().vm.updateQuestion();
                             }
                         }
                 };
