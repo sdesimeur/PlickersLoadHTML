@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.24
+// @version      1.25
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -46,11 +46,10 @@ function changeItemByHTML (questionDiv) {
                 oReq2.onreadystatechange = function() {
                         if (oReq2.readyState === XMLHttpRequest.DONE) {
                             var resp=oReq2.responseText;
-                            var id = /[ABCD]/.exec(resp)[0].charCodeAt(0)-"A".charCodeAt(0);
                             var choices = angular.element(questionDiv).scope().vm.question.choices;
                             var cl = choices.length;
                             for (var k=0;k<cl;k++) {
-                                choices[k].correct=(k===id);
+                                choices[k].correct = (new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
                             }
                         }
                 };
