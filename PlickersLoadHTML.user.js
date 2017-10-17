@@ -44,6 +44,7 @@ function changeItemByHTML (questionDiv) {
         }
 
         // angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope()
+        //angular.element(document.querySelectorAll('[class*="poll-manager"]')[0]).scope().vm
         if (! questionDiv.classList.contains('trueResponsesChanged')) {
                 var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
                 var oReq2=new XMLHttpRequest();
