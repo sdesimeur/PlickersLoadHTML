@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.36
+// @version	  1.37
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -44,29 +44,29 @@ function changeItemByHTML (questionDiv,questionSec) {
 			oReq1.send();
 		}
 
-		var currentVM=angular.element(questionDiv).scope().vm;
-		if (! questionDiv.classList.contains('trueResponsesChanged')) {
-			var oReq2=new XMLHttpRequest();
-			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-			oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
-			oReq2.onreadystatechange=function() {
-				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
-					questionDiv.classList.add('trueResponsesChanged');
-					var resp=this.responseText;
-					//if (resp.length<20) {
-					var choices=currentVM.question.choices;
-					var cl=choices.length;
-					for (var k=0;k<cl;k++) {
-						choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
-					}
-					currentVM.updateQuestion();
-					//}
-				}
-			};
-			oReq2.send();
-		}
-
 		if (questionSec!==null) {
+			var currentVM=angular.element(questionSec.querySelection('pl-library-question')).scope().vm;
+			if (! questionDiv.classList.contains('trueResponsesChanged')) {
+				var oReq2=new XMLHttpRequest();
+				//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+				oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
+				oReq2.onreadystatechange=function() {
+					if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+						questionDiv.classList.add('trueResponsesChanged');
+						var resp=this.responseText;
+						//if (resp.length<20) {
+						var choices=currentVM.question.choices;
+						var cl=choices.length;
+						for (var k=0;k<cl;k++) {
+							choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
+						}
+						currentVM.updateQuestion();
+						//}
+					}
+				};
+				oReq2.send();
+			}
+
 			var oReq3=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq3.open("GET", tmpURL+"/Sections.txt", true);
