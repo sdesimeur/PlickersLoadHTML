@@ -1,13 +1,13 @@
 //==UserScript==
-// @name         PlickersLoadHTML
-// @namespace    http://sdesimeur.com/
-// @version      1.31
+// @name		 PlickersLoadHTML
+// @namespace	http://sdesimeur.com/
+// @version	  1.32
 // @description  try to take over the world!
-// @author       SDesimeur
+// @author	SDesimeur
 // @include https://plickers.com/*
 // @include https://*.plickers.com/*
 // @include https://www.plickers.com/*
-// @grant        none
+// @grant		none
 // @run-at document-end
 //==/UserScript==
 
@@ -15,92 +15,119 @@
 var mathjaxloaded = false;
 
 function changeItemByHTML (questionDiv) {
-    //var url4Download="https://www.sdesimeur.com/utils/download.php?url=";
-        if (! questionDiv.classList.contains('turnInHTML')) {
-            var regexURL=/:::\{\s*(.*)\s*\}:::/;
-            var result=regexURL.exec(questionDiv.outerText);
-            if (result!==null) {
-                var tmpURL=result[1];
-                questionDiv.style.display="none";
-                var oReq1=new XMLHttpRequest();
-                //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-                oReq1.open("GET", tmpURL+"/Question.html", true);
-                oReq1.onreadystatechange=function() {
-                        if (oReq1.readyState===XMLHttpRequest.DONE) {
-                            questionDiv.classList.add('turnInHTML');
-                            var sp=document.createElement("span");
-                            sp.id="mySpan";
-                            sp.innerHTML=oReq1.responseText;
-                            var srcs=sp.querySelectorAll('[src]');
-                            for (var k=0;k<srcs.length;k++) {
-                                var srctxt=srcs[k].attributes[0].nodeValue;
-                                if (! (/^\s*(http|data)/g.test(srctxt))) {
-                                    srcs[k].src=tmpURL + "/" + srctxt;
-                                }
-                            }
-                            questionDiv.parentNode.insertBefore(sp,questionDiv);
-                        }
-                };
-                oReq1.send();
-            }
-        }
+	//var url4Download="https://www.sdesimeur.com/utils/download.php?url=";
+	if (! questionDiv.classList.contains('turnInHTML')) {
+		var regexURL=/:::\{\s*(.*)\s*\}:::/;
+		var result=regexURL.exec(questionDiv.outerText);
+		if (result!==null) {
+			var tmpURL=result[1];
+			questionDiv.style.display="none";
+			var oReq1=new XMLHttpRequest();
+			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+			oReq1.open("GET", tmpURL+"/Question.html", true);
+			oReq1.onreadystatechange=function() {
+				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+					questionDiv.classList.add('turnInHTML');
+					var sp=document.createElement("span");
+					sp.id="mySpan";
+					sp.innerHTML=this.responseText;
+					var srcs=sp.querySelectorAll('[src]');
+					for (var k=0;k<srcs.length;k++) {
+						var srctxt=srcs[k].attributes[0].nodeValue;
+						if (! (/^\s*(http|data)/g.test(srctxt))) {
+							srcs[k].src=tmpURL + "/" + srctxt;
+						}
+					}
+					questionDiv.parentNode.insertBefore(sp,questionDiv);
+				}
+			};
+			oReq1.send();
+		}
+	}
 
-        // angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope()
-        //angular.element(document.querySelectorAll('[class*="poll-manager"]')[0]).scope().vm
-        //angular.element(document.querySelector('pl-poll-manager')).scope().vm.queuedPollSections["59c00d98ede4ae0400b49379"]
-        //angular.element(document.querySelector('pl-poll-manager')).scope().vm.sections
-        if (! questionDiv.classList.contains('trueResponsesChanged')) {
-                var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
-                var oReq2=new XMLHttpRequest();
-                //oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-                oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
-                oReq2.onreadystatechange=function() {
-                        if (oReq2.readyState===XMLHttpRequest.DONE) {
-                            questionDiv.classList.add('trueResponsesChanged');
-                            var resp=oReq2.responseText;
-                            if (resp.length<20) {
-                                var choices=currentVM.question.choices;
-                                var cl=choices.length;
-                                for (var k=0;k<cl;k++) {
-                                    choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
-                                }
-                                currentVM.updateQuestion();
-                            }
-                        }
-                };
-                oReq2.send();
-        }
+		// angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope()
+		//angular.element(document.querySelectorAll('[class*="poll-manager"]')[0]).scope().vm
+		//angular.element(document.querySelector('pl-poll-manager')).scope().vm.queuedPollSections["59c00d98ede4ae0400b49379"]
+		//angular.element(document.querySelector('pl-poll-manager')).scope().vm.sections
+	var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
+	if (! questionDiv.classList.contains('trueResponsesChanged')) {
+		//var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
+		var oReq2=new XMLHttpRequest();
+		//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+		oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
+		oReq2.onreadystatechange=function() {
+			if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+				questionDiv.classList.add('trueResponsesChanged');
+				var resp=this.responseText;
+				//if (resp.length<20) {
+				var choices=currentVM.question.choices;
+				var cl=choices.length;
+				for (var k=0;k<cl;k++) {
+					choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
+				}
+				currentVM.updateQuestion();
+				//}
+			}
+		};
+		oReq2.send();
+	}
+	var currentPollVM=angular.element(document.querySelector('pl-poll-manager')).scope().vm;
+	var oReq3=new XMLHttpRequest();
+	//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+	oReq3.open("GET", tmpURL+"/Sections.txt", true);
+	oReq3.onreadystatechange=function() {
+		if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+			var resp=this.responseText;
+			//if (resp.length<20) {
+			if (!currentPollVM.hasOwnProperty("queuedPollSections")) currentPollVM.queuedPollSections=new Object();
+			var queuedPollSections=currentPollVM.queuedPollSections;
+			var sections=currentPollVM.sections;
+			var sl=sections.length;
+			for (var k=0;k<sl;k++) {
+				if (new RegExp(sections[k].name).test(resp)) {
+					if (!queuedPollSections.hasOwnProperty(sections[k].id)) {
+						queuedPollSections[sections[k].id]=new Object();
+						queuedPollSections[sections[k].id].section=sections[k];
+						queuedPollSections[sections[k].id].count=1;
+					}
+				}
+			}
+			currentVM.updateQuestion();
+			//}
+		}
+	};
+	oReq3.send();
 }
 
 
 function PlickersLoadHTML () {
-    var questionDivS=document.querySelectorAll('[class*="question-body"]');
-    if ( questionDivS.length!==0 ) {
-        var questionDiv=questionDivS[0];
-        changeItemByHTML(questionDiv);
-    } else {
-	    var allQuestions=document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
-	    //var allQuestions=document.querySelectorAll('[ng-model="vm.question.body"]');
-	    //var item=allQuestions.querySelectorAll('textarea');
-        var aql=allQuestions.length;
-        if (aql!==0) for (var i=0;i<aql;i++) {
-            var item=allQuestions[i];
-	        var questionItemS=item.querySelectorAll('[class*="question-container"]');
-	        if ( questionItemS.length!==0 ) {
-	            questionDivS=questionItemS[0].querySelectorAll('[class*="table-question"');
-                if (questionDivS.length!==0) {
-	                changeItemByHTML(questionDivS[0]);
-                }
-	        }
-	    }
-    }
-//                '[ng-repeat*="choice in vm.question.choices track by $index"]'
-//                '[ng-click*="vm.updateQuestion()"]'
-//                '[ng-click*="vm.addQuestion(true)"]'
-//                '[ng-click*="vm.addQuestion()"]'
+	var questionDivS=document.querySelectorAll('[class*="question-body"]');
+	if ( questionDivS.length!==0 ) {
+		var questionDiv=questionDivS[0];
+		changeItemByHTML(questionDiv);
+	} else {
+		var allQuestions=document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+		//var allQuestions=document.querySelectorAll('[ng-model="vm.question.body"]');
+		//var item=allQuestions.querySelectorAll('textarea');
+		var aql=allQuestions.length;
+		if (aql!==0) for (var i=0;i<aql;i++) {
+			var item=allQuestions[i];
+	  		var questionItemS=item.querySelectorAll('[class*="question-container"]');
+	  		if ( questionItemS.length!==0 ) {
+				questionDivS=questionItemS[0].querySelectorAll('[class*="table-question"');
+				if (questionDivS.length!==0) {
+					changeItemByHTML(questionDivS[0]);
+				}
+			}
+		}
+	}
+//	'[ng-repeat*="choice in vm.question.choices track by $index"]'
+//	'[ng-click*="vm.updateQuestion()"]'
+//	'[ng-click*="vm.addQuestion(true)"]'
+//	'[ng-click*="vm.addQuestion()"]'
 
-//                '[class*="question-body"]'
-    MathJax.Hub.Typeset();
+//	'[class*="question-body"]'
+	MathJax.Hub.Typeset();
 }
 
 function OnLoadMathJax(){
@@ -108,11 +135,11 @@ function OnLoadMathJax(){
 	console.log('TeXify-Plickers MATHJAX READY ' + startTime.toLocaleTimeString());
 	
 	MathJax.Hub.Config({
-	    showProcessingMessages : false,
-	    tex2jax: {
-	        inlineMath: [ ['[;',';]'] ],
-	        processEscapes: true
-	    }
+		showProcessingMessages : false,
+		tex2jax: {
+			inlineMath: [ ['[;',';]'] ],
+			processEscapes: true
+		}
 	});
 	
 	mathjaxloaded = true;
@@ -120,11 +147,11 @@ function OnLoadMathJax(){
 
    /* Application */
 if (self==top) { /* run only in the top frame. we do our own frame parsing */
-    var script = document.createElement('script');
+	var script = document.createElement('script');
 	script.type = 'text/javascript';
 	/* end 30/04/2017 : script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"; */
 	script.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
 	script.onload = OnLoadMathJax;
 	document.head.appendChild(script);
-    setInterval(PlickersLoadHTML, 3000);
+	setInterval(PlickersLoadHTML, 3000);
 }
