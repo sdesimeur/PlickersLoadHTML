@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.34
+// @version	  1.35
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -44,7 +44,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 			oReq1.send();
 		}
 
-		var currentVM=angular.element(questionDiv.querySelector('[ng-show="!vm.isNew"]')).scope().vm;
+		var currentVM=angular.element(questionDiv).scope().vm;
 		if (! questionDiv.classList.contains('trueResponsesChanged')) {
 			var oReq2=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -67,7 +67,6 @@ function changeItemByHTML (questionDiv,questionSec) {
 		}
 
 		if (questionSec!==null) {
-			var currentPollVM=angular.element(questionSec.querySelector('pl-poll-manager')).scope().vm;
 			var oReq3=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq3.open("GET", tmpURL+"/Sections.txt", true);
@@ -75,14 +74,14 @@ function changeItemByHTML (questionDiv,questionSec) {
 				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
 					var resp=this.responseText;
 					//if (resp.length<20) {
-					if (!currentPollVM.hasOwnProperty("queuedPollSections")) currentPollVM.queuedPollSections=new Object();
+					if (!currentVM.hasOwnProperty("queuedPollSections")) currentVM.queuedPollSections=new Object();
 					var queuedPollSections=currentPollVM.queuedPollSections;
-					var sections=currentPollVM.sections;
+					var sections=currentVM.sections;
 					var sl=sections.length;
 					for (var k=0;k<sl;k++) {
 						if (new RegExp(sections[k].name).test(resp)) {
 							if (!queuedPollSections.hasOwnProperty(sections[k].id)) 
-								currentPollVM.addPollForQuestionAndSection(sections[k]);
+								currentVM.addPollForQuestionAndSection(sections[k]);
 						}
 					}
 					currentVM.updateQuestion();
