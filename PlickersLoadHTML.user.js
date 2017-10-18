@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.33
+// @version	  1.34
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -14,13 +14,13 @@
 
 var mathjaxloaded = false;
 
-function changeItemByHTML (questionDiv) {
+function changeItemByHTML (questionDiv,questionSec) {
 	//var url4Download="https://www.sdesimeur.com/utils/download.php?url=";
-	if (! questionDiv.classList.contains('turnInHTML')) {
-		var regexURL=/:::\{\s*(.*)\s*\}:::/;
-		var result=regexURL.exec(questionDiv.outerText);
-		if (result!==null) {
-			var tmpURL=result[1];
+	var regexURL=/:::\{\s*(.*)\s*\}:::/;
+	var result=regexURL.exec(questionDiv.outerText);
+	if (result!==null) {
+		var tmpURL=result[1];
+		if (! questionDiv.classList.contains('turnInHTML')) {
 			questionDiv.style.display="none";
 			var oReq1=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -43,57 +43,55 @@ function changeItemByHTML (questionDiv) {
 			};
 			oReq1.send();
 		}
-	}
 
-		// angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope()
-		//angular.element(document.querySelectorAll('[class*="poll-manager"]')[0]).scope().vm
-		//angular.element(document.querySelector('pl-poll-manager')).scope().vm.queuedPollSections["59c00d98ede4ae0400b49379"]
-		//angular.element(document.querySelector('pl-poll-manager')).scope().vm.sections
-	var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
-	if (! questionDiv.classList.contains('trueResponsesChanged')) {
-		//var currentVM=angular.element(document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]')[0].querySelectorAll('[ng-show="!vm.isNew"]')[0]).scope().vm;
-		var oReq2=new XMLHttpRequest();
-		//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-		oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
-		oReq2.onreadystatechange=function() {
-			if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
-				questionDiv.classList.add('trueResponsesChanged');
-				var resp=this.responseText;
-				//if (resp.length<20) {
-				var choices=currentVM.question.choices;
-				var cl=choices.length;
-				for (var k=0;k<cl;k++) {
-					choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
+		var currentVM=angular.element(questionDiv.querySelector('[ng-show="!vm.isNew"]')).scope().vm;
+		if (! questionDiv.classList.contains('trueResponsesChanged')) {
+			var oReq2=new XMLHttpRequest();
+			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+			oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
+			oReq2.onreadystatechange=function() {
+				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+					questionDiv.classList.add('trueResponsesChanged');
+					var resp=this.responseText;
+					//if (resp.length<20) {
+					var choices=currentVM.question.choices;
+					var cl=choices.length;
+					for (var k=0;k<cl;k++) {
+						choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
+					}
+					currentVM.updateQuestion();
+					//}
 				}
-				currentVM.updateQuestion();
-				//}
-			}
-		};
-		oReq2.send();
-	}
-	var currentPollVM=angular.element(document.querySelector('pl-poll-manager')).scope().vm;
-	var oReq3=new XMLHttpRequest();
-	//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-	oReq3.open("GET", tmpURL+"/Sections.txt", true);
-	oReq3.onreadystatechange=function() {
-		if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
-			var resp=this.responseText;
-			//if (resp.length<20) {
-			if (!currentPollVM.hasOwnProperty("queuedPollSections")) currentPollVM.queuedPollSections=new Object();
-			var queuedPollSections=currentPollVM.queuedPollSections;
-			var sections=currentPollVM.sections;
-			var sl=sections.length;
-			for (var k=0;k<sl;k++) {
-				if (new RegExp(sections[k].name).test(resp)) {
-					if (!queuedPollSections.hasOwnProperty(sections[k].id)) 
-						currentPollVM.addPollForQuestionAndSection(sections[k]);
-				}
-			}
-			currentVM.updateQuestion();
-			//}
+			};
+			oReq2.send();
 		}
-	};
-	oReq3.send();
+
+		if (questionSec!==null) {
+			var currentPollVM=angular.element(questionSec.querySelector('pl-poll-manager')).scope().vm;
+			var oReq3=new XMLHttpRequest();
+			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+			oReq3.open("GET", tmpURL+"/Sections.txt", true);
+			oReq3.onreadystatechange=function() {
+				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+					var resp=this.responseText;
+					//if (resp.length<20) {
+					if (!currentPollVM.hasOwnProperty("queuedPollSections")) currentPollVM.queuedPollSections=new Object();
+					var queuedPollSections=currentPollVM.queuedPollSections;
+					var sections=currentPollVM.sections;
+					var sl=sections.length;
+					for (var k=0;k<sl;k++) {
+						if (new RegExp(sections[k].name).test(resp)) {
+							if (!queuedPollSections.hasOwnProperty(sections[k].id)) 
+								currentPollVM.addPollForQuestionAndSection(sections[k]);
+						}
+					}
+					currentVM.updateQuestion();
+					//}
+				}
+			};
+			oReq3.send();
+		}
+	}
 }
 
 
@@ -109,11 +107,11 @@ function PlickersLoadHTML () {
 		var aql=allQuestions.length;
 		if (aql!==0) for (var i=0;i<aql;i++) {
 			var item=allQuestions[i];
-	  		var questionItemS=item.querySelectorAll('[class*="question-container"]');
-	  		if ( questionItemS.length!==0 ) {
-				questionDivS=questionItemS[0].querySelectorAll('[class*="table-question"');
-				if (questionDivS.length!==0) {
-					changeItemByHTML(questionDivS[0]);
+	  		var questionItem=item.querySelector('[class*="question-container"]');
+	  		if ( questionItem!==null ) {
+				questionDiv=questionItem.querySelector('[class*="table-question"');
+				if (questionDiv!==null) {
+					changeItemByHTML(questionDiv,item);
 				}
 			}
 		}
