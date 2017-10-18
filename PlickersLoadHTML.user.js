@@ -26,7 +26,9 @@ function changeItemByHTML (questionDiv,questionSec) {
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq1.open("GET", tmpURL+"/Question.html", true);
 			oReq1.onreadystatechange=function() {
-				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+				if (this.readyState === XMLHttpRequest.DONE)
+				if (this.status===200)
+				if (!(/<\s*body[>\s]/g.test(this.responseText)))
 					questionDiv.classList.add('turnInHTML');
 					var sp=document.createElement("span");
 					sp.id="mySpan";
@@ -51,7 +53,9 @@ function changeItemByHTML (questionDiv,questionSec) {
 				//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 				oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
 				oReq2.onreadystatechange=function() {
-					if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+					if (this.readyState === XMLHttpRequest.DONE)
+					if (this.status===200)
+					if (!(/<\s*body[>\s]/g.test(this.responseText)))
 						questionDiv.classList.add('trueResponsesChanged');
 						var resp=this.responseText;
 						//if (resp.length<20) {
@@ -71,7 +75,9 @@ function changeItemByHTML (questionDiv,questionSec) {
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq3.open("GET", tmpURL+"/Sections.txt", true);
 			oReq3.onreadystatechange=function() {
-				if (this.readyState === XMLHttpRequest.DONE) if (this.status===200) {
+				if (this.readyState === XMLHttpRequest.DONE)
+				if (this.status===200)
+				if (!(/<\s*body[>\s]/g.test(this.responseText)))
 					var resp=this.responseText;
 					//if (resp.length<20) {
 					if (!currentVM.hasOwnProperty("queuedPollSections")) currentVM.queuedPollSections=new Object();
