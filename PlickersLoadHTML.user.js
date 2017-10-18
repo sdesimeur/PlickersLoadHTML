@@ -28,7 +28,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 			oReq1.onreadystatechange=function() {
 				if (this.readyState === XMLHttpRequest.DONE)
 				if (this.status===200)
-				if (!(/<\s*body[>\s]/g.test(this.responseText)))
+				if (!(/<\s*body[>\s]/g.test(this.responseText))) {
 					questionDiv.classList.add('turnInHTML');
 					var sp=document.createElement("span");
 					sp.id="mySpan";
@@ -55,7 +55,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 				oReq2.onreadystatechange=function() {
 					if (this.readyState === XMLHttpRequest.DONE)
 					if (this.status===200)
-					if (!(/<\s*body[>\s]/g.test(this.responseText)))
+					if (!(/<\s*body[>\s]/g.test(this.responseText))) {
 						questionDiv.classList.add('trueResponsesChanged');
 						var resp=this.responseText;
 						//if (resp.length<20) {
@@ -77,7 +77,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 			oReq3.onreadystatechange=function() {
 				if (this.readyState === XMLHttpRequest.DONE)
 				if (this.status===200)
-				if (!(/<\s*body[>\s]/g.test(this.responseText)))
+				if (!(/<\s*body[>\s]/g.test(this.responseText))) {
 					var resp=this.responseText;
 					//if (resp.length<20) {
 					if (!currentVM.hasOwnProperty("queuedPollSections")) currentVM.queuedPollSections=new Object();
