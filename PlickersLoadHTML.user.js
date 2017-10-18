@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.38
+// @version	  1.39
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -66,7 +66,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 				};
 				oReq2.send();
 			}
-
+			var currentPollVM=currentVM.querySelector('pl-poll-manager').scope().vm;
 			var oReq3=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq3.open("GET", tmpURL+"/Sections.txt", true);
@@ -78,13 +78,11 @@ function changeItemByHTML (questionDiv,questionSec) {
 					var queuedPollSections=currentVM.queuedPollSections;
 					var sections=currentVM.sections;
 					var sl=sections.length;
-					for (var k=0;k<sl;k++) {
-						if (new RegExp(sections[k].name).test(resp)) {
-							if (!queuedPollSections.hasOwnProperty(sections[k].id)) 
-								currentVM.addPollForQuestionAndSection(sections[k]);
-						}
-					}
-					currentVM.updateQuestion();
+					for (var k=0;k<sl;k++)
+						if (new RegExp(sections[k].name).test(resp))
+							if (!queuedPollSections.hasOwnProperty(sections[k].id))
+								currentPollVM.addPollForQuestionAndSection(sections[k]);
+					//currentVM.updateQuestion();
 					//}
 				}
 			};
