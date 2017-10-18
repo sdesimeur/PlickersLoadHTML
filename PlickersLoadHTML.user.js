@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.32
+// @version	  1.33
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -85,11 +85,8 @@ function changeItemByHTML (questionDiv) {
 			var sl=sections.length;
 			for (var k=0;k<sl;k++) {
 				if (new RegExp(sections[k].name).test(resp)) {
-					if (!queuedPollSections.hasOwnProperty(sections[k].id)) {
-						queuedPollSections[sections[k].id]=new Object();
-						queuedPollSections[sections[k].id].section=sections[k];
-						queuedPollSections[sections[k].id].count=1;
-					}
+					if (!queuedPollSections.hasOwnProperty(sections[k].id)) 
+						currentPollVM.addPollForQuestionAndSection(sections[k]);
 				}
 			}
 			currentVM.updateQuestion();
