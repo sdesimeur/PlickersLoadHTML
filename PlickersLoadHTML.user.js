@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.37
+// @version	  1.38
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -45,7 +45,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 		}
 
 		if (questionSec!==null) {
-			var currentVM=angular.element(questionSec.querySelection('pl-library-question')).scope().vm;
+			var currentVM=angular.element(questionSec.querySelector('pl-library-question')).scope().vm;
 			if (! questionDiv.classList.contains('trueResponsesChanged')) {
 				var oReq2=new XMLHttpRequest();
 				//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -95,9 +95,8 @@ function changeItemByHTML (questionDiv,questionSec) {
 
 
 function PlickersLoadHTML () {
-	var questionDivS=document.querySelectorAll('[class*="question-body"]');
-	if ( questionDivS.length!==0 ) {
-		var questionDiv=questionDivS[0];
+	var questionDiv=document.querySelector('[class*="question-body"]');
+	if ( questionDiv!==null ) {
 		changeItemByHTML(questionDiv);
 	} else {
 		var allQuestions=document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
