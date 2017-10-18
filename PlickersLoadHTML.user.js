@@ -1,7 +1,7 @@
 //==UserScript==
 // @name         PlickersLoadHTML
 // @namespace    http://sdesimeur.com/
-// @version      1.30
+// @version      1.31
 // @description  try to take over the world!
 // @author       SDesimeur
 // @include https://plickers.com/*
@@ -11,6 +11,8 @@
 // @run-at document-end
 //==/UserScript==
 
+
+var mathjaxloaded = false;
 
 function changeItemByHTML (questionDiv) {
     //var url4Download="https://www.sdesimeur.com/utils/download.php?url=";
@@ -98,16 +100,31 @@ function PlickersLoadHTML () {
 //                '[ng-click*="vm.addQuestion()"]'
 
 //                '[class*="question-body"]'
-
+    MathJax.Hub.Typeset();
 }
 
-function PlickersNewQuestion () {
-    //var questionDiv =document.getElementsByClassName('question-field')[0].;
-    //document.querySelectorAll('[ng-model="vm.question.body"]')
-
+function OnLoadMathJax(){
+	var startTime = new Date();
+	console.log('TeXify-Plickers MATHJAX READY ' + startTime.toLocaleTimeString());
+	
+	MathJax.Hub.Config({
+	    showProcessingMessages : false,
+	    tex2jax: {
+	        inlineMath: [ ['[;',';]'] ],
+	        processEscapes: true
+	    }
+	});
+	
+	mathjaxloaded = true;
 }
 
    /* Application */
 if (self==top) { /* run only in the top frame. we do our own frame parsing */
+    var script = document.createElement('script');
+	script.type = 'text/javascript';
+	/* end 30/04/2017 : script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"; */
+	script.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+	script.onload = OnLoadMathJax;
+	document.head.appendChild(script);
     setInterval(PlickersLoadHTML, 3000);
 }
