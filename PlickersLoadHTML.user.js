@@ -75,7 +75,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 					var resp=this.responseText;
 					//if (resp.length<20) {
 					if (!currentVM.hasOwnProperty("queuedPollSections")) currentVM.queuedPollSections=new Object();
-					var queuedPollSections=currentPollVM.queuedPollSections;
+					var queuedPollSections=currentVM.queuedPollSections;
 					var sections=currentVM.sections;
 					var sl=sections.length;
 					for (var k=0;k<sl;k++) {
