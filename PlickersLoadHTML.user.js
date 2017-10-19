@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.52
+// @version	  1.53
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -72,7 +72,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 			}
 			var currentPollVM=angular.element(questionSec.querySelector('[class*="poll-manager"]')).scope().vm;
             var sections=currentPollVM.sections;
-            var queuedPollSections=angular.element(questionSec.querySelector('pl-poll-manager')).queuedPollSections;
+            var queuedPollSections=angular.element(questionSec.querySelector('pl-poll-manager')).scope().vm.queuedPollSections;
 			var oReq3=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq3.open("GET", tmpURL+"/Sections.txt", true);
