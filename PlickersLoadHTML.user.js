@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.48
+// @version	  1.49
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -114,7 +114,7 @@ function PlickersLoadHTML () {
 	  		if ( questionItem!==null ) {
 				questionDiv=questionItem.querySelector('[class*="table-question"');
 				if (questionDiv!==null) {
-					changeItemByHTML(questionDiv,questionItem);
+					changeItemByHTML(questionDiv,item);
 				}
 			}
 		}
