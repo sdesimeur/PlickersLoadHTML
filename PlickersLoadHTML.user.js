@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.49
+// @version	  1.51
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -47,8 +47,8 @@ function changeItemByHTML (questionDiv,questionSec) {
 		}
 
 		if (questionSec!==null) {
-			var currentVM=angular.element(questionDiv).scope().vm;
-			var currentGoodResponsesVM=angular.element(questionSec.querySelector('[class*="question-editor"]')).scope().vm;
+			var currentQuestionEditorVM=angular.element(questionSec.querySelector('pl-question-editor').querySelector('[class*="question-editor"]')).scope().vm;
+            var choices=currentQuestionEditorVM.question.choices;
 			if (! questionDiv.classList.contains('trueResponsesChanged')) {
 				var oReq2=new XMLHttpRequest();
 				//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -60,18 +60,19 @@ function changeItemByHTML (questionDiv,questionSec) {
 						questionDiv.classList.add('trueResponsesChanged');
 						var resp=this.responseText;
 						//if (resp.length<20) {
-						var choices=currentVM.question.choices;
 						var cl=choices.length;
 						for (var k=0;k<cl;k++) {
 							choices[k].correct=(new RegExp(String.fromCharCode("A".charCodeAt(0)+k))).test(resp);
 						}
-						currentGoodResponsesVM.updateQuestion();
+						currentQuestionEditorVM.updateQuestion();
 						//}
 					}
 				};
 				oReq2.send();
 			}
 			var currentPollVM=angular.element(questionSec.querySelector('[class*="poll-manager"]')).scope().vm;
+            var sections=currentPollVM.sections;
+            var queuedPollSections=angular.element(questionSec.querySelector('pl-poll-manager').queuedPollSections;
 			var oReq3=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 			oReq3.open("GET", tmpURL+"/Sections.txt", true);
@@ -81,13 +82,10 @@ function changeItemByHTML (questionDiv,questionSec) {
 				if (!(/<\s*body[>\s]/g.test(this.responseText))) {
 					var resp=this.responseText;
 					//if (resp.length<20) {
-					if (!currentVM.hasOwnProperty("queuedPollSections")) currentVM.queuedPollSections=new Object();
-					var queuedPollSections=currentVM.queuedPollSections;
-					var sections=currentVM.sections;
 					var sl=sections.length;
 					for (var k=0;k<sl;k++)
 						if (new RegExp(sections[k].name).test(resp))
-							if (!queuedPollSections.hasOwnProperty(sections[k].id))
+							if ((queuedPollSections===null) || (!queuedPollSections.hasOwnProperty(sections[k].id)))
 								currentPollVM.addPollForQuestionAndSection(sections[k]);
 					//currentVM.updateQuestion();
 					//}
@@ -104,18 +102,15 @@ function PlickersLoadHTML () {
 	if ( questionDiv!==null ) {
 		changeItemByHTML(questionDiv,null);
 	} else {
-		var allQuestions=document.querySelectorAll('[ng-repeat*="question in vm.questionsInThePage"]');
+		var allQuestions=document.querySelectorAll('pl-library-question');
 		//var allQuestions=document.querySelectorAll('[ng-model="vm.question.body"]');
 		//var item=allQuestions.querySelectorAll('textarea');
 		var aql=allQuestions.length;
 		if (aql!==0) for (var i=0;i<aql;i++) {
-			var item=allQuestions[i];
-	  		var questionItem=item.querySelector('[class*="question-container"]');
-	  		if ( questionItem!==null ) {
-				questionDiv=questionItem.querySelector('[class*="table-question"');
-				if (questionDiv!==null) {
-					changeItemByHTML(questionDiv,item);
-				}
+			var questionItem=allQuestions[i];
+			questionDiv=questionItem.querySelector('[class*="table-question"');
+			if (questionDiv!==null) {
+				changeItemByHTML(questionDiv,questionItem);
 			}
 		}
 	}
