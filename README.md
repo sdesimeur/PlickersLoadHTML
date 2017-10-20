@@ -1,9 +1,14 @@
 # PlickersLoadHTML
 
 
-First.
+1.  Installation.
 In Chrome, You have to install two plugins:
-<ul>
-<li><a src="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi">Allow-Control-Allow-Origin: \*</a></li>
-<li><a src="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a></li>
-</ul>
+`a  [Allow-Control-Allow-Origin: *](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi)
+`b  [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+
+2.  Create resources.
+
+
+
+
+3.  After launching page [Plickers](https://www.plickers.com)
