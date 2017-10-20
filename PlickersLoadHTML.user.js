@@ -21,6 +21,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 	if (result!==null) {
 		var tmpURL=result[1];
 		if (! questionDiv.classList.contains('turnInHTML')) {
+			questionDiv.classList.add('turnInHTML');
 			questionDiv.style.display="none";
 			var oReq1=new XMLHttpRequest();
 			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
@@ -29,7 +30,6 @@ function changeItemByHTML (questionDiv,questionSec) {
 				if (this.readyState === XMLHttpRequest.DONE)
 				if (this.status===200)
 				if (!(/<\s*body[>\s]/g.test(this.responseText))) {
-					questionDiv.classList.add('turnInHTML');
 					var sp=document.createElement("span");
 					sp.id="mySpan";
 					sp.innerHTML=this.responseText;
@@ -50,6 +50,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 			var currentQuestionEditorVM=angular.element(questionSec.querySelector('pl-question-editor').querySelector('[class*="question-editor"]')).scope().vm;
             var choices=currentQuestionEditorVM.question.choices;
 			if (! questionDiv.classList.contains('trueResponsesChanged')) {
+				questionDiv.classList.add('trueResponsesChanged');
 				var oReq2=new XMLHttpRequest();
 				//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
 				oReq2.open("GET", tmpURL+"/TrueResponses.txt", true);
@@ -57,7 +58,6 @@ function changeItemByHTML (questionDiv,questionSec) {
 					if (this.readyState === XMLHttpRequest.DONE)
 					if (this.status===200)
 					if (!(/<\s*body[>\s]/g.test(this.responseText))) {
-						questionDiv.classList.add('trueResponsesChanged');
 						var resp=this.responseText;
 						//if (resp.length<20) {
 						var cl=choices.length;
