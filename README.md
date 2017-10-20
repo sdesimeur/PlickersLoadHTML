@@ -1,4 +1,6 @@
-# PlickersLoadHTML
+# PlickersLoadHTML  
+
+With this script you can add images, mathjax's tags, music throught html formatted text.  
 
 
 1.  Installation.  
