@@ -37,3 +37,6 @@ You have to put the link of the https url directory between :::{  and }::: in th
 Sample:  
 :::{https://www.sdesimeur.com/College/Plickers/TestDir/}:::
 
+Or through a ssl enabled localhost webserver with apache or other:  
+:::{https://localhost/~me/Plickers/TestDir/}:::
+
