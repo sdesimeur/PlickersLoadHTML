@@ -40,3 +40,4 @@ Sample:
 Or through a ssl enabled localhost webserver with apache or other:  
 :::{https://localhost/~me/Plickers/TestDir/}:::
 
+If the webserver use a self-signed certificate, you have to load a https page for this webserver in your browser and accept the certificate before to use PlickersLoadHTML.
