@@ -41,7 +41,6 @@ function changeItemByHTML (questionDiv,questionSec) {
 						}
 					}
 					questionDiv.parentNode.insertBefore(sp,questionDiv);
-					MathJax.Hub.Typeset();
 				}
 			};
 			oReq1.send();
@@ -125,6 +124,7 @@ function PlickersLoadHTML () {
 //	'[ng-click*="vm.addQuestion()"]'
 
 //	'[class*="question-body"]'
+	MathJax.Hub.Typeset();
 }
 
 function OnLoadMathJax(){
@@ -150,5 +150,5 @@ if (self==top) { /* run only in the top frame. we do our own frame parsing */
 	script.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
 	script.onload = OnLoadMathJax;
 	document.head.appendChild(script);
-	setInterval(PlickersLoadHTML, 3000);
+	setInterval(PlickersLoadHTML, 5000);
 }
