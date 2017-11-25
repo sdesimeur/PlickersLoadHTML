@@ -41,6 +41,7 @@ function changeItemByHTML (questionDiv,questionSec) {
 						}
 					}
 					questionDiv.parentNode.insertBefore(sp,questionDiv);
+					MathJax.Hub.Typeset();
 				}
 			};
 			oReq1.send();
@@ -98,14 +99,18 @@ function changeItemByHTML (questionDiv,questionSec) {
 
 
 function PlickersLoadHTML () {
-	var questionDiv=document.querySelector('[class*="question-body"]');
-	if ( questionDiv!==null ) {
-		changeItemByHTML(questionDiv,null);
+	var allQuestions=document.querySelectorAll('[class*="question-body"]');
+	var aql=allQuestions.length;
+	if ( aql!==0 ) for (var i=0;i<aql;i++) {
+		var questionDiv = allQuestions[i];
+		if (questionDiv!==null) {
+			changeItemByHTML(questionDiv,null);
+		}
 	} else {
-		var allQuestions=document.querySelectorAll('pl-library-question');
+		allQuestions=document.querySelectorAll('pl-library-question');
 		//var allQuestions=document.querySelectorAll('[ng-model="vm.question.body"]');
 		//var item=allQuestions.querySelectorAll('textarea');
-		var aql=allQuestions.length;
+		aql=allQuestions.length;
 		if (aql!==0) for (var i=0;i<aql;i++) {
 			var questionItem=allQuestions[i];
 			questionDiv=questionItem.querySelector('[class*="table-question"');
@@ -120,7 +125,6 @@ function PlickersLoadHTML () {
 //	'[ng-click*="vm.addQuestion()"]'
 
 //	'[class*="question-body"]'
-	MathJax.Hub.Typeset();
 }
 
 function OnLoadMathJax(){
