@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.58
+// @version	  1.59
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -119,7 +119,7 @@ function PlickersLoadHTML () {
 		//var item=allQuestions.querySelectorAll('textarea');
 		aql=allQuestions.length;
 		if (aql!==0) for (var j=0;j<aql;j++) {
-			var questionItem=allQuestions[i];
+			var questionItem=allQuestions[j];
 			questionDiv=questionItem.querySelector('[class*="table-question"]');
 			if (questionDiv!==null) {
 				changeItemByHTML(questionDiv,questionItem);
