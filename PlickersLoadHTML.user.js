@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.61
+// @version	  1.62
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -17,7 +17,7 @@ var mathjaxloaded = false;
 function changeItemByHTML (questionDiv,questionSec) {
 	//var url4Download="https://www.sdesimeur.com/utils/download.php?url=";
 	var regexURL=/:::\{\s*(.*)\s*\}:::/;
-	var result=regexURL.exec(questionDiv.outerText.replace(/(\r\n\t|\n|\r\t)/gm,""));
+	var result=regexURL.exec(questionDiv.outerText.replace(/(\r|\n|\t)/g,""));
 	if (result!==null) {
 		var tmpURL=result[1];
 		if (! questionDiv.classList.contains('turnInHTML')) {
