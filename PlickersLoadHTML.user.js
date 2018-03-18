@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.64
+// @version	  1.65
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -47,7 +47,8 @@ function changeItemByHTML (questionDiv,questionSec) {
 				};
 				oReq1.send();
 			} else {
-				sp.innerHTML=tmpURL.atob();
+				//sp.innerHTML=tmpURL.atob();
+				sp.innerHTML=tmpURL;
 				questionDiv.parentNode.insertBefore(sp,questionDiv);
 			}
 
