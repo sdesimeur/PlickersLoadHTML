@@ -1,7 +1,7 @@
 //==UserScript==
 // @name		 PlickersLoadHTML
 // @namespace	http://sdesimeur.com/
-// @version	  1.55
+// @version	  1.56
 // @description  try to take over the world!
 // @author	SDesimeur
 // @include https://plickers.com/*
@@ -23,27 +23,34 @@ function changeItemByHTML (questionDiv,questionSec) {
 		if (! questionDiv.classList.contains('turnInHTML')) {
 			questionDiv.classList.add('turnInHTML');
 			questionDiv.style.display="none";
-			var oReq1=new XMLHttpRequest();
-			//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
-			oReq1.open("GET", tmpURL+"/Question.html", true);
-			oReq1.onreadystatechange=function() {
-				if (this.readyState === XMLHttpRequest.DONE)
-				if (this.status===200)
-				if (!(/<\s*body[>\s]/g.test(this.responseText))) {
-					var sp=document.createElement("span");
-					sp.id="mySpan";
-					sp.innerHTML=this.responseText;
-					var srcs=sp.querySelectorAll('[src]');
-					for (var k=0;k<srcs.length;k++) {
-						var srctxt=srcs[k].attributes[0].nodeValue;
-						if (! (/^\s*(http|data)/g.test(srctxt))) {
-							srcs[k].src=tmpURL + "/" + srctxt;
+			var sp=document.createElement("span");
+			sp.id="mySpan";
+			regexURL=/^http/;
+			if (tmpURL.match(regexURL)) {
+				var oReq1=new XMLHttpRequest();
+				//oReq.open("GET", url4Download + btoa(tmpURL+"/Question.html"), true);
+				oReq1.open("GET", tmpURL+"/Question.html", true);
+				oReq1.onreadystatechange=function() {
+					if (this.readyState === XMLHttpRequest.DONE)
+					if (this.status===200)
+					if (!(/<\s*body[>\s]/g.test(this.responseText))) {
+						sp.innerHTML=this.responseText;
+						var srcs=sp.querySelectorAll('[src]');
+						for (var k=0;k<srcs.length;k++) {
+							var srctxt=srcs[k].attributes[0].nodeValue;
+							if (! (/^\s*(http|data)/g.test(srctxt))) {
+								srcs[k].src=tmpURL + "/" + srctxt;
+							}
 						}
+						questionDiv.parentNode.insertBefore(sp,questionDiv);
 					}
-					questionDiv.parentNode.insertBefore(sp,questionDiv);
-				}
-			};
-			oReq1.send();
+				};
+				oReq1.send();
+			} else {
+				sp.innerHTML=tmpURL;
+				questionDiv.parentNode.insertBefore(sp,questionDiv);
+			}
+
 		}
 
 		if (questionSec!==null) {
